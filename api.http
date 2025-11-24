@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:9080/api/v1
+
+### Get all accounts (paginated)
+GET {{baseUrl}}/catalogo-cuentas?page=1&size=5
+Accept: application/json
+
+### Get all accounts (filtered by type)
+GET {{baseUrl}}/catalogo-cuentas?tipo=ACTIVO
+Accept: application/json
+
+### Get account by ID
+GET {{baseUrl}}/catalogo-cuentas/1
+Accept: application/json
+
+### Create a new account
+POST {{baseUrl}}/catalogo-cuentas
+Content-Type: application/json
+
+{
+  "codigo": "101.01",
+  "nombre": "Caja Chica",
+  "tipo": "ACTIVO",
+  "nivel": 2,
+  "descripcion": "Fondos para gastos menores",
+  "cuentaPadreId": 1
+}
+
+### Update an existing account
+PUT {{baseUrl}}/catalogo-cuentas/1
+Content-Type: application/json
+
+{
+  "codigo": "101",
+  "nombre": "Caja General",
+  "tipo": "ACTIVO",
+  "nivel": 1,
+  "descripcion": "Fondos principales de la empresa"
+}
+
+### Delete an account
+DELETE {{baseUrl}}/catalogo-cuentas/2
+Accept: application/json
