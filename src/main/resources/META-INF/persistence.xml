@@ -1,33 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
-             version="3.0">
-    <persistence-unit name="ContabilidadPU" transaction-type="JTA">
-        <jta-data-source>jdbc/contabilidad</jta-data-source>     <!-- Configuración de transacciones dentro de liberty-->
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CabeceraTransaccion</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Credito</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CreditoSocio</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaBancaria</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaContable</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaOperacion</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Empleado</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.EmpleadoSalario</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.MetadatoTipoCredito</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.OperacionBancaria</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Persona</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Socio</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TarjetaBancaria</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoCredito</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoCreditoCaracteristica</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoCuentaBancaria</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoCuentaContable</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoEmpleado</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoTarjetaBancaria</class>
-        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Transaccion</class>
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+    <persistence-unit name="contabilidadPU" transaction-type="JTA">
+        <jta-data-source>jdbc/contabilidadDS</jta-data-source>
+
+        <!-- Add your entity classes here as they are created -->
+        <!-- <class>com.tuempresa.contabilidad.entity.Cuenta</class> -->
+
         <properties>
-            <property name="eclipselink.target-database" value="PostgreSQL"/>
+            <!-- Properties for Hibernate -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
         </properties>
     </persistence-unit>
-  
 </persistence>
