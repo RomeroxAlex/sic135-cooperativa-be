@@ -51,13 +51,15 @@ public class BalanceInicialBean extends AbstractDataPersist<BalanceInicial> impl
         BigDecimal totalHaber = BigDecimal.ZERO;
         
         for (BalanceInicial balance : balances) {
-            if (balance.getCuenta() == null && balance.getCuenta().getId() == null) {
-                CatalogoCuenta cuenta = catalogoCuentaBean.findById(balance.getCuenta().getId());
-                if (cuenta == null) {
-                    throw new ResourceNotFoundException("CatalogoCuenta", balance.getCuenta().getId());
-                }
-                balance.setCuenta(cuenta);
+            if (balance.getCuenta() == null || balance.getCuenta().getId() == null) {
+                throw new BusinessException("MISSING_CUENTA", "La cuenta es requerida para cada balance inicial");
             }
+            
+            CatalogoCuenta cuenta = catalogoCuentaBean.findById(balance.getCuenta().getId());
+            if (cuenta == null) {
+                throw new ResourceNotFoundException("CatalogoCuenta", balance.getCuenta().getId());
+            }
+            balance.setCuenta(cuenta);
             
             BigDecimal debe = balance.getSaldoDebe() != null ? balance.getSaldoDebe() : BigDecimal.ZERO;
             BigDecimal haber = balance.getSaldoHaber() != null ? balance.getSaldoHaber() : BigDecimal.ZERO;
