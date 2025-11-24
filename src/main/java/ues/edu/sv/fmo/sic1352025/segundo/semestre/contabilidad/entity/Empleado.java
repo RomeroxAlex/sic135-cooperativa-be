@@ -6,17 +6,18 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -32,9 +33,8 @@ public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_empleado")
-    private Object idEmpleado;
+    private UUID idEmpleado;
     @Column(name = "activo")
     private Boolean activo;
     @OneToMany(mappedBy = "idEmpleado")
@@ -49,15 +49,15 @@ public class Empleado implements Serializable {
     public Empleado() {
     }
 
-    public Empleado(Object idEmpleado) {
+    public Empleado(UUID idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
 
-    public Object getIdEmpleado() {
+    public UUID getIdEmpleado() {
         return idEmpleado;
     }
 
-    public void setIdEmpleado(Object idEmpleado) {
+    public void setIdEmpleado(UUID idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
 
@@ -100,18 +100,7 @@ public class Empleado implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Empleado)) {
-            return false;
-        }
-        Empleado other = (Empleado) object;
-        if ((this.idEmpleado == null && other.idEmpleado != null) || (this.idEmpleado != null && !this.idEmpleado.equals(other.idEmpleado))) {
-            return false;
-        }
-        return true;
-    }
+  
 
     @Override
     public String toString() {

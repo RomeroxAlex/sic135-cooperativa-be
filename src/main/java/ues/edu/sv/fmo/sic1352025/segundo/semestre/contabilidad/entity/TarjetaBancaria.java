@@ -7,18 +7,19 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -36,9 +37,8 @@ public class TarjetaBancaria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_tarjeta_bancaria")
-    private Object idTarjetaBancaria;
+    private UUID idTarjetaBancaria;
     @Column(name = "saldo")
     private BigInteger saldo;
     @Column(name = "fecha_vencimiento")
@@ -56,15 +56,15 @@ public class TarjetaBancaria implements Serializable {
     public TarjetaBancaria() {
     }
 
-    public TarjetaBancaria(Object idTarjetaBancaria) {
+    public TarjetaBancaria(UUID idTarjetaBancaria) {
         this.idTarjetaBancaria = idTarjetaBancaria;
     }
 
-    public Object getIdTarjetaBancaria() {
+    public UUID getIdTarjetaBancaria() {
         return idTarjetaBancaria;
     }
 
-    public void setIdTarjetaBancaria(Object idTarjetaBancaria) {
+    public void setIdTarjetaBancaria(UUID idTarjetaBancaria) {
         this.idTarjetaBancaria = idTarjetaBancaria;
     }
 
@@ -113,19 +113,6 @@ public class TarjetaBancaria implements Serializable {
         int hash = 0;
         hash += (idTarjetaBancaria != null ? idTarjetaBancaria.hashCode() : 0);
         return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TarjetaBancaria)) {
-            return false;
-        }
-        TarjetaBancaria other = (TarjetaBancaria) object;
-        if ((this.idTarjetaBancaria == null && other.idTarjetaBancaria != null) || (this.idTarjetaBancaria != null && !this.idTarjetaBancaria.equals(other.idTarjetaBancaria))) {
-            return false;
-        }
-        return true;
     }
 
     @Override

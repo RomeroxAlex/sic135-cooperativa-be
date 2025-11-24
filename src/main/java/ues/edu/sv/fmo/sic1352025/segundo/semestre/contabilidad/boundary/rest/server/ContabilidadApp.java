@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Application;
  *
  * @author jordi
  */
-@ApplicationPath("v1_1")
+@ApplicationPath("v1")
 public class ContabilidadApp extends Application{
     // http://localhost:9080/contabilidad-0.1-SNAPSHOT/v1/
 

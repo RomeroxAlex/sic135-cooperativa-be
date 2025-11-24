@@ -6,15 +6,16 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -32,9 +33,8 @@ public class TipoCredito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_tipo_credito")
-    private Object idTipoCredito;
+    private UUID idTipoCredito;
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "descripcion")
@@ -49,15 +49,15 @@ public class TipoCredito implements Serializable {
     public TipoCredito() {
     }
 
-    public TipoCredito(Object idTipoCredito) {
+    public TipoCredito(UUID idTipoCredito) {
         this.idTipoCredito = idTipoCredito;
     }
 
-    public Object getIdTipoCredito() {
+    public UUID getIdTipoCredito() {
         return idTipoCredito;
     }
 
-    public void setIdTipoCredito(Object idTipoCredito) {
+    public void setIdTipoCredito(UUID idTipoCredito) {
         this.idTipoCredito = idTipoCredito;
     }
 
@@ -108,18 +108,6 @@ public class TipoCredito implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoCredito)) {
-            return false;
-        }
-        TipoCredito other = (TipoCredito) object;
-        if ((this.idTipoCredito == null && other.idTipoCredito != null) || (this.idTipoCredito != null && !this.idTipoCredito.equals(other.idTipoCredito))) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public String toString() {

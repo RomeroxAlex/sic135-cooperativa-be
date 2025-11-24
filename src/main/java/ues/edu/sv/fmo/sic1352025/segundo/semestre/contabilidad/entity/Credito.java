@@ -8,19 +8,20 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -40,9 +41,8 @@ public class Credito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_credito")
-    private Object idCredito;
+    private UUID idCredito;
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -63,7 +63,7 @@ public class Credito implements Serializable {
     public Credito() {
     }
 
-    public Credito(Object idCredito) {
+    public Credito(UUID idCredito) {
         this.idCredito = idCredito;
     }
 
@@ -71,7 +71,7 @@ public class Credito implements Serializable {
         return idCredito;
     }
 
-    public void setIdCredito(Object idCredito) {
+    public void setIdCredito(UUID idCredito) {
         this.idCredito = idCredito;
     }
 
@@ -138,18 +138,7 @@ public class Credito implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Credito)) {
-            return false;
-        }
-        Credito other = (Credito) object;
-        if ((this.idCredito == null && other.idCredito != null) || (this.idCredito != null && !this.idCredito.equals(other.idCredito))) {
-            return false;
-        }
-        return true;
-    }
+  
 
     @Override
     public String toString() {

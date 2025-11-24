@@ -7,18 +7,20 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -38,9 +40,8 @@ public class CabeceraTransaccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_cabecera_transaccion")
-    private Object idCabeceraTransaccion;
+    private UUID idCabeceraTransaccion;
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -48,12 +49,12 @@ public class CabeceraTransaccion implements Serializable {
     private String tablaOrigen;
     @Lob
     @Column(name = "id_origen")
-    private Object idOrigen;
+    private UUID idOrigen;
     @Column(name = "observaciones")
     private String observaciones;
     @Lob
     @Column(name = "id_socio")
-    private Object idSocio;
+    private UUID idSocio;
     @Column(name = "monto")
     private BigInteger monto;
     @Column(name = "moneda")
@@ -68,15 +69,15 @@ public class CabeceraTransaccion implements Serializable {
     public CabeceraTransaccion() {
     }
 
-    public CabeceraTransaccion(Object idCabeceraTransaccion) {
+    public CabeceraTransaccion(UUID idCabeceraTransaccion) {
         this.idCabeceraTransaccion = idCabeceraTransaccion;
     }
 
-    public Object getIdCabeceraTransaccion() {
+    public UUID getIdCabeceraTransaccion() {
         return idCabeceraTransaccion;
     }
 
-    public void setIdCabeceraTransaccion(Object idCabeceraTransaccion) {
+    public void setIdCabeceraTransaccion(UUID idCabeceraTransaccion) {
         this.idCabeceraTransaccion = idCabeceraTransaccion;
     }
 
@@ -96,11 +97,11 @@ public class CabeceraTransaccion implements Serializable {
         this.tablaOrigen = tablaOrigen;
     }
 
-    public Object getIdOrigen() {
+    public UUID getIdOrigen() {
         return idOrigen;
     }
 
-    public void setIdOrigen(Object idOrigen) {
+    public void setIdOrigen(UUID idOrigen) {
         this.idOrigen = idOrigen;
     }
 
@@ -112,11 +113,11 @@ public class CabeceraTransaccion implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public Object getIdSocio() {
+    public UUID getIdSocio() {
         return idSocio;
     }
 
-    public void setIdSocio(Object idSocio) {
+    public void setIdSocio(UUID idSocio) {
         this.idSocio = idSocio;
     }
 
@@ -159,19 +160,7 @@ public class CabeceraTransaccion implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CabeceraTransaccion)) {
-            return false;
-        }
-        CabeceraTransaccion other = (CabeceraTransaccion) object;
-        if ((this.idCabeceraTransaccion == null && other.idCabeceraTransaccion != null) || (this.idCabeceraTransaccion != null && !this.idCabeceraTransaccion.equals(other.idCabeceraTransaccion))) {
-            return false;
-        }
-        return true;
-    }
-
+   
     @Override
     public String toString() {
         return "ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CabeceraTransaccion[ idCabeceraTransaccion=" + idCabeceraTransaccion + " ]";

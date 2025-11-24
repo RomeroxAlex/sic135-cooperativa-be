@@ -6,15 +6,16 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -34,9 +35,8 @@ public class OperacionBancaria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_operacion_bancaria")
-    private Object idOperacionBancaria;
+    private UUID idOperacionBancaria;
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "descripcion")
@@ -55,15 +55,15 @@ public class OperacionBancaria implements Serializable {
     public OperacionBancaria() {
     }
 
-    public OperacionBancaria(Object idOperacionBancaria) {
+    public OperacionBancaria(UUID idOperacionBancaria) {
         this.idOperacionBancaria = idOperacionBancaria;
     }
 
-    public Object getIdOperacionBancaria() {
+    public UUID getIdOperacionBancaria() {
         return idOperacionBancaria;
     }
 
-    public void setIdOperacionBancaria(Object idOperacionBancaria) {
+    public void setIdOperacionBancaria(UUID idOperacionBancaria) {
         this.idOperacionBancaria = idOperacionBancaria;
     }
 
@@ -130,18 +130,7 @@ public class OperacionBancaria implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OperacionBancaria)) {
-            return false;
-        }
-        OperacionBancaria other = (OperacionBancaria) object;
-        if ((this.idOperacionBancaria == null && other.idOperacionBancaria != null) || (this.idOperacionBancaria != null && !this.idOperacionBancaria.equals(other.idOperacionBancaria))) {
-            return false;
-        }
-        return true;
-    }
+  
 
     @Override
     public String toString() {

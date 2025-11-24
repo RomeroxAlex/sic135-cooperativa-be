@@ -6,7 +6,6 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-
 /**
  *
  * @author jordi
@@ -15,11 +14,12 @@ public abstract class AbstractDataPersist<T> {
 
     public abstract EntityManager getEntityManager();
 
-    Class tipoDatos;
+    Class<T> tipoDatos;
 
-    public AbstractDataPersist(Class tipoDatos) {
+    public AbstractDataPersist(Class<T> tipoDatos) {
         this.tipoDatos = tipoDatos;
     }
+
 
     public void persistEntity(T entity) throws IllegalStateException, IllegalArgumentException {
         try {
@@ -111,6 +111,31 @@ public abstract class AbstractDataPersist<T> {
         }
 
         return (T) em.find(tipoDatos, id);
+    }
+
+    /**
+     *
+     * @return Todos los registros en una tabla
+     * FORMA JPQL -> SELECT raiz from tipoDatos raiz- tipoDatos sería el origen, igual la raíz
+     */
+    public List<T> findAll() {
+        EntityManager em = getEntityManager();
+        if(em == null){
+            throw new IllegalStateException("El EntityManager no puede ser null");
+        }
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<T> cq = cb.createQuery(tipoDatos);
+            Root<T> raiz = cq.from(tipoDatos);
+            cq.select(raiz);
+            
+            // Acá solo la ejecutamos y asignamos a su tipo de datos
+            TypedQuery<T> query = em.createQuery(cq);
+            return query.getResultList();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Error al acceder al obtener ", ex);
+
+        }
     }
 
 }

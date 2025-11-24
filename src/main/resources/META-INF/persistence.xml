@@ -25,6 +25,5 @@
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoEmpleado</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoTarjetaBancaria</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Transaccion</class>
-       
     </persistence-unit>
 </persistence>

@@ -6,16 +6,17 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -31,9 +32,8 @@ public class EmpleadoSalario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_empleado_salario")
-    private Object idEmpleadoSalario;
+    private UUID idEmpleadoSalario;
     @Column(name = "salario")
     private BigInteger salario;
     @JoinColumn(name = "id_empleado", referencedColumnName = "id_empleado")
@@ -43,15 +43,15 @@ public class EmpleadoSalario implements Serializable {
     public EmpleadoSalario() {
     }
 
-    public EmpleadoSalario(Object idEmpleadoSalario) {
+    public EmpleadoSalario(UUID idEmpleadoSalario) {
         this.idEmpleadoSalario = idEmpleadoSalario;
     }
 
-    public Object getIdEmpleadoSalario() {
+    public UUID getIdEmpleadoSalario() {
         return idEmpleadoSalario;
     }
 
-    public void setIdEmpleadoSalario(Object idEmpleadoSalario) {
+    public void setIdEmpleadoSalario(UUID idEmpleadoSalario) {
         this.idEmpleadoSalario = idEmpleadoSalario;
     }
 
@@ -76,19 +76,6 @@ public class EmpleadoSalario implements Serializable {
         int hash = 0;
         hash += (idEmpleadoSalario != null ? idEmpleadoSalario.hashCode() : 0);
         return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EmpleadoSalario)) {
-            return false;
-        }
-        EmpleadoSalario other = (EmpleadoSalario) object;
-        if ((this.idEmpleadoSalario == null && other.idEmpleadoSalario != null) || (this.idEmpleadoSalario != null && !this.idEmpleadoSalario.equals(other.idEmpleadoSalario))) {
-            return false;
-        }
-        return true;
     }
 
     @Override

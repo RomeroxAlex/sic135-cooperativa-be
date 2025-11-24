@@ -6,15 +6,16 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.UUID;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 /**
  *
@@ -30,9 +31,8 @@ public class TipoCuentaContable implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Lob
     @Column(name = "id_tipo_cuenta_contable")
-    private Object idTipoCuentaContable;
+    private UUID idTipoCuentaContable;
     @Column(name = "nombre")
     private String nombre;
     @OneToMany(mappedBy = "idTipoCuentaContable")
@@ -41,15 +41,15 @@ public class TipoCuentaContable implements Serializable {
     public TipoCuentaContable() {
     }
 
-    public TipoCuentaContable(Object idTipoCuentaContable) {
+    public TipoCuentaContable(UUID idTipoCuentaContable) {
         this.idTipoCuentaContable = idTipoCuentaContable;
     }
 
-    public Object getIdTipoCuentaContable() {
+    public UUID getIdTipoCuentaContable() {
         return idTipoCuentaContable;
     }
 
-    public void setIdTipoCuentaContable(Object idTipoCuentaContable) {
+    public void setIdTipoCuentaContable(UUID idTipoCuentaContable) {
         this.idTipoCuentaContable = idTipoCuentaContable;
     }
 
@@ -76,18 +76,6 @@ public class TipoCuentaContable implements Serializable {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoCuentaContable)) {
-            return false;
-        }
-        TipoCuentaContable other = (TipoCuentaContable) object;
-        if ((this.idTipoCuentaContable == null && other.idTipoCuentaContable != null) || (this.idTipoCuentaContable != null && !this.idTipoCuentaContable.equals(other.idTipoCuentaContable))) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public String toString() {
