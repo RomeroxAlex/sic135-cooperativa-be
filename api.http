@@ -1,0 +1,372 @@
+### API Contabilidad - SIC135 Cooperativa
+### Ejemplos de uso de los endpoints REST
+### Base URL: http://localhost:9080/contabilidad/api/v1
+
+### ========================================
+### 1. CATÁLOGO DE CUENTAS
+### ========================================
+
+### Listar todas las cuentas (paginado)
+GET http://localhost:9080/contabilidad/api/v1/catalogo-cuentas?page=0&size=20
+Accept: application/json
+
+### Listar cuentas filtradas por tipo
+GET http://localhost:9080/contabilidad/api/v1/catalogo-cuentas?tipo=ACTIVO&page=0&size=20
+Accept: application/json
+
+### Obtener cuenta por ID
+GET http://localhost:9080/contabilidad/api/v1/catalogo-cuentas/a1110001-0000-0000-0000-000000000001
+Accept: application/json
+
+### Crear nueva cuenta
+POST http://localhost:9080/contabilidad/api/v1/catalogo-cuentas
+Content-Type: application/json
+
+{
+  "codigo": "110103",
+  "nombre": "Caja Moneda Extranjera",
+  "tipo": "ACTIVO",
+  "nivel": 4,
+  "descripcion": "Caja en moneda extranjera",
+  "cuentaPadreId": "a1110000-0000-0000-0000-000000000001"
+}
+
+### Actualizar cuenta
+PUT http://localhost:9080/contabilidad/api/v1/catalogo-cuentas/a1110001-0000-0000-0000-000000000001
+Content-Type: application/json
+
+{
+  "codigo": "110101",
+  "nombre": "Caja General Actualizada",
+  "tipo": "ACTIVO",
+  "nivel": 4,
+  "descripcion": "Caja general de la empresa - actualizada"
+}
+
+### Eliminar cuenta (soft-delete)
+DELETE http://localhost:9080/contabilidad/api/v1/catalogo-cuentas/a1110001-0000-0000-0000-000000000001
+
+
+### ========================================
+### 2. MANUAL DE CUENTAS
+### ========================================
+
+### Listar manuales
+GET http://localhost:9080/contabilidad/api/v1/manual-cuentas
+Accept: application/json
+
+### Obtener manual por ID
+GET http://localhost:9080/contabilidad/api/v1/manual-cuentas/m0000001-0000-0000-0000-000000000001
+Accept: application/json
+
+### Crear manual
+POST http://localhost:9080/contabilidad/api/v1/manual-cuentas
+Content-Type: application/json
+
+{
+  "titulo": "Manual de Procedimientos Contables",
+  "contenido": "# Manual de Procedimientos\n\n## Objetivo\nEstablecer los procedimientos contables...",
+  "version": "2.0"
+}
+
+### Actualizar manual
+PUT http://localhost:9080/contabilidad/api/v1/manual-cuentas/m0000001-0000-0000-0000-000000000001
+Content-Type: application/json
+
+{
+  "titulo": "Manual de Contabilidad - Actualizado",
+  "contenido": "# Manual de Contabilidad\n\nContenido actualizado...",
+  "version": "1.1"
+}
+
+
+### ========================================
+### 3. PARTIDAS DE DIARIO
+### ========================================
+
+### Listar partidas
+GET http://localhost:9080/contabilidad/api/v1/diario/partidas?page=0&size=20
+Accept: application/json
+
+### Listar partidas por estado
+GET http://localhost:9080/contabilidad/api/v1/diario/partidas?estado=BORRADOR
+Accept: application/json
+
+### Listar partidas por rango de fechas
+GET http://localhost:9080/contabilidad/api/v1/diario/partidas?fechaInicio=2024-01-01&fechaFin=2024-12-31
+Accept: application/json
+
+### Obtener partida por ID
+GET http://localhost:9080/contabilidad/api/v1/diario/partidas/pd000001-0000-0000-0000-000000000001
+Accept: application/json
+
+### Crear partida de diario
+POST http://localhost:9080/contabilidad/api/v1/diario/partidas
+Content-Type: application/json
+
+{
+  "fecha": "2024-01-15",
+  "descripcion": "Compra de suministros de oficina",
+  "referencia": "FAC-PROV-001",
+  "lineas": [
+    {
+      "cuentaId": "g6120000-0000-0000-0000-000000000001",
+      "descripcion": "Suministros de oficina",
+      "debe": 150.00,
+      "haber": 0
+    },
+    {
+      "cuentaId": "a1110001-0000-0000-0000-000000000001",
+      "descripcion": "Pago en efectivo",
+      "debe": 0,
+      "haber": 150.00
+    }
+  ]
+}
+
+### Actualizar partida
+PUT http://localhost:9080/contabilidad/api/v1/diario/partidas/pd000001-0000-0000-0000-000000000001
+Content-Type: application/json
+
+{
+  "fecha": "2024-01-15",
+  "descripcion": "Partida actualizada",
+  "referencia": "REF-002",
+  "lineas": [
+    {
+      "cuentaId": "a1110001-0000-0000-0000-000000000001",
+      "descripcion": "Débito",
+      "debe": 100.00,
+      "haber": 0
+    },
+    {
+      "cuentaId": "a1120001-0000-0000-0000-000000000001",
+      "descripcion": "Crédito",
+      "debe": 0,
+      "haber": 100.00
+    }
+  ]
+}
+
+### Postear partida
+POST http://localhost:9080/contabilidad/api/v1/diario/partidas/pd000001-0000-0000-0000-000000000001/postear
+Accept: application/json
+
+### Anular partida
+POST http://localhost:9080/contabilidad/api/v1/diario/partidas/pd000001-0000-0000-0000-000000000001/anular
+Accept: application/json
+
+
+### ========================================
+### 4. MAYORIZACIÓN
+### ========================================
+
+### Obtener mayor de una cuenta
+GET http://localhost:9080/contabilidad/api/v1/mayor/a1110001-0000-0000-0000-000000000001?fechaInicio=2024-01-01&fechaFin=2024-12-31
+Accept: application/json
+
+### Generar mayorización batch
+POST http://localhost:9080/contabilidad/api/v1/mayor/generar?periodo=2024
+Accept: application/json
+
+
+### ========================================
+### 5. PARTIDAS DE AJUSTE
+### ========================================
+
+### Listar partidas de ajuste
+GET http://localhost:9080/contabilidad/api/v1/ajustes/partidas
+Accept: application/json
+
+### Crear partida de ajuste
+POST http://localhost:9080/contabilidad/api/v1/ajustes/partidas
+Content-Type: application/json
+
+{
+  "fecha": "2024-12-31",
+  "descripcion": "Ajuste de depreciación mensual",
+  "referencia": "AJUSTE-DEP-001",
+  "motivoAjuste": "Registro de depreciación del mes de diciembre",
+  "lineas": [
+    {
+      "cuentaId": "g6110000-0000-0000-0000-000000000001",
+      "descripcion": "Gasto de depreciación",
+      "debe": 500.00,
+      "haber": 0
+    },
+    {
+      "cuentaId": "a1140000-0000-0000-0000-000000000001",
+      "descripcion": "Depreciación acumulada",
+      "debe": 0,
+      "haber": 500.00
+    }
+  ]
+}
+
+
+### ========================================
+### 6. BALANZA DE COMPROBACIÓN
+### ========================================
+
+### Generar balanza de comprobación
+GET http://localhost:9080/contabilidad/api/v1/balanza/comprobacion?fechaDesde=2024-01-01&fechaHasta=2024-12-31
+Accept: application/json
+
+### Exportar balanza a CSV
+GET http://localhost:9080/contabilidad/api/v1/balanza/comprobacion/export?fechaDesde=2024-01-01&fechaHasta=2024-12-31&format=csv
+Accept: text/csv
+
+
+### ========================================
+### 7. BALANCE INICIAL
+### ========================================
+
+### Obtener balance inicial por periodo
+GET http://localhost:9080/contabilidad/api/v1/balance-inicial/2024
+Accept: application/json
+
+### Crear balance inicial
+POST http://localhost:9080/contabilidad/api/v1/balance-inicial?periodo=2024
+Content-Type: application/json
+
+[
+  {
+    "cuentaId": "a1110001-0000-0000-0000-000000000001",
+    "saldoDebe": 5000.00,
+    "saldoHaber": 0,
+    "fechaRegistro": "2024-01-01"
+  },
+  {
+    "cuentaId": "a1120001-0000-0000-0000-000000000001",
+    "saldoDebe": 5000.00,
+    "saldoHaber": 0,
+    "fechaRegistro": "2024-01-01"
+  },
+  {
+    "cuentaId": "c3100000-0000-0000-0000-000000000001",
+    "saldoDebe": 0,
+    "saldoHaber": 10000.00,
+    "fechaRegistro": "2024-01-01"
+  }
+]
+
+
+### ========================================
+### 8. ESTADOS FINANCIEROS
+### ========================================
+
+### Generar Balance General
+GET http://localhost:9080/contabilidad/api/v1/estados/balance-general?periodo=2024
+Accept: application/json
+
+### Generar Estado de Resultados
+GET http://localhost:9080/contabilidad/api/v1/estados/resultado?periodo=2024
+Accept: application/json
+
+### Generar Estado de Resultados por mes
+GET http://localhost:9080/contabilidad/api/v1/estados/resultado?periodo=2024-12
+Accept: application/json
+
+
+### ========================================
+### 9. FACTURAS
+### ========================================
+
+### Listar facturas
+GET http://localhost:9080/contabilidad/api/v1/facturas?page=0&size=20
+Accept: application/json
+
+### Obtener factura por ID
+GET http://localhost:9080/contabilidad/api/v1/facturas/f0000001-0000-0000-0000-000000000001
+Accept: application/json
+
+### Crear factura
+POST http://localhost:9080/contabilidad/api/v1/facturas
+Content-Type: application/json
+
+{
+  "clienteNombre": "Empresa ABC S.A. de C.V.",
+  "clienteNit": "0614-123456-123-4",
+  "fecha": "2024-01-20",
+  "observaciones": "Venta de productos",
+  "items": [
+    {
+      "codigoProducto": "PROD001",
+      "descripcion": "Producto A",
+      "cantidad": 5,
+      "precioUnitario": 25.00
+    },
+    {
+      "codigoProducto": "PROD002",
+      "descripcion": "Producto B",
+      "cantidad": 3,
+      "precioUnitario": 50.00
+    }
+  ]
+}
+
+### Actualizar factura
+PUT http://localhost:9080/contabilidad/api/v1/facturas/f0000001-0000-0000-0000-000000000001
+Content-Type: application/json
+
+{
+  "clienteNombre": "Empresa ABC S.A. de C.V.",
+  "clienteNit": "0614-123456-123-4",
+  "fecha": "2024-01-20",
+  "observaciones": "Factura actualizada",
+  "items": [
+    {
+      "codigoProducto": "PROD001",
+      "descripcion": "Producto A - Modificado",
+      "cantidad": 10,
+      "precioUnitario": 25.00
+    }
+  ]
+}
+
+### Emitir factura
+POST http://localhost:9080/contabilidad/api/v1/facturas/f0000001-0000-0000-0000-000000000001/emitir
+Accept: application/json
+
+### Anular factura
+POST http://localhost:9080/contabilidad/api/v1/facturas/f0000001-0000-0000-0000-000000000001/anular
+Accept: application/json
+
+
+### ========================================
+### 10. REPORTES
+### ========================================
+
+### Reporte de ventas diarias
+GET http://localhost:9080/contabilidad/api/v1/reportes/ventas-diarias?fecha=2024-01-20
+Accept: application/json
+
+
+### ========================================
+### 11. AUDITORÍA
+### ========================================
+
+### Listar registros de auditoría
+GET http://localhost:9080/contabilidad/api/v1/auditoria?page=0&size=50
+Accept: application/json
+
+### Filtrar auditoría por usuario
+GET http://localhost:9080/contabilidad/api/v1/auditoria/usuario/admin
+Accept: application/json
+
+### Filtrar auditoría por entidad
+GET http://localhost:9080/contabilidad/api/v1/auditoria/entidad/CatalogoCuenta
+Accept: application/json
+
+
+### ========================================
+### OpenAPI / Swagger Documentation
+### ========================================
+
+### Obtener especificación OpenAPI
+GET http://localhost:9080/openapi
+Accept: application/yaml
+
+### Obtener especificación OpenAPI en JSON
+GET http://localhost:9080/openapi
+Accept: application/json

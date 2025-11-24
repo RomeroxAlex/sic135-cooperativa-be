@@ -5,6 +5,7 @@
              version="3.0">
     <persistence-unit name="ContabilidadPU" transaction-type="JTA">
         <jta-data-source>jdbc/contabilidad</jta-data-source>     <!-- Configuración de transacciones dentro de liberty-->
+        <!-- Existing entities -->
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CabeceraTransaccion</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Credito</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CreditoSocio</class>
@@ -25,6 +26,16 @@
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoEmpleado</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoTarjetaBancaria</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Transaccion</class>
+        <!-- New accounting entities -->
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CatalogoCuenta</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.ManualCuenta</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.PartidaDiario</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.LineaPartida</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.MovimientoMayor</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.BalanceInicial</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Factura</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.ItemFactura</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Auditoria</class>
         <properties>
             <property name="eclipselink.target-database" value="PostgreSQL"/>
         </properties>
