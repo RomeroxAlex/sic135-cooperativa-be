@@ -21,3 +21,222 @@ TABLA DE VERSIONES
 | Java          | 21        |
 | Jakarta       | 10        |
 | Open Liberty  | 24.0.0.10 |
+
+---
+
+## Restauración de Base de Datos PostgreSQL con Docker
+
+Este proyecto incluye infraestructura Docker para restaurar automáticamente una base de datos PostgreSQL desde un archivo de backup en formato custom (`pg_dump -Fc`).
+
+### Requisitos Previos
+
+- **Docker** instalado y en ejecución (versión 20.10 o superior recomendada)
+- **Git** instalado (para el script de despliegue)
+- **Archivo de backup** en formato custom de PostgreSQL (`backup.dump`)
+
+### Estructura de Archivos
+
+```
+sic135-cooperativa-be/
+├── Dockerfile           # Imagen Docker basada en postgres:16
+├── init.sh              # Script de restauración automática
+├── deploy.sh            # Script de despliegue completo
+├── backup.dump          # Archivo de backup (NO incluido en git)
+├── .gitignore           # Ignora archivos .dump
+├── pom.xml              # Configuración Maven
+├── src/                 # Código fuente de la aplicación
+└── README.md            # Este archivo
+```
+
+### Cómo Generar el Archivo de Backup
+
+Si necesitas crear un backup de una base de datos PostgreSQL existente:
+
+```bash
+# Formato custom (recomendado para restauración)
+pg_dump -U usuario -d nombre_base_datos -Fc -f backup.dump
+
+# Ejemplo con host remoto
+pg_dump -h localhost -p 5432 -U postgres -d contabilidad -Fc -f backup.dump
+```
+
+### Instrucciones de Uso
+
+#### Opción 1: Despliegue Rápido con Script (Recomendado)
+
+1. **Clonar el repositorio** (si aún no lo has hecho):
+   ```bash
+   git clone https://github.com/RomeroxAlex/sic135-cooperativa-be.git
+   cd sic135-cooperativa-be
+   ```
+
+2. **Colocar el archivo de backup** en la raíz del proyecto:
+   ```bash
+   cp /ruta/a/tu/backup.dump ./backup.dump
+   ```
+
+3. **Dar permisos de ejecución al script**:
+   ```bash
+   chmod +x deploy.sh
+   ```
+
+4. **Ejecutar el script de despliegue**:
+   ```bash
+   ./deploy.sh
+   ```
+
+5. **Confirmar la eliminación del volumen** (si existe uno anterior):
+   - Escribir `s` y presionar Enter para confirmar
+   - Escribir `n` o presionar Enter para cancelar
+
+#### Opción 2: Ejecución Manual con Docker
+
+1. **Colocar el archivo de backup**:
+   ```bash
+   cp /ruta/a/tu/backup.dump ./backup.dump
+   ```
+
+2. **Construir la imagen Docker**:
+   ```bash
+   docker build -t sic135-postgres .
+   ```
+
+3. **Crear y ejecutar el contenedor**:
+   ```bash
+   docker run -d \
+     --name sic135-postgres-db \
+     -e POSTGRES_USER=postgres \
+     -e POSTGRES_PASSWORD=postgres \
+     -e POSTGRES_DB=contabilidad \
+     -v sic135-postgres-data:/var/lib/postgresql/data \
+     -p 5432:5432 \
+     --restart unless-stopped \
+     sic135-postgres
+   ```
+
+4. **Ver los logs de restauración**:
+   ```bash
+   docker logs -f sic135-postgres-db
+   ```
+
+### Variables de Entorno Configurables
+
+El script `deploy.sh` permite personalizar la configuración mediante variables de entorno:
+
+| Variable | Descripción | Valor por Defecto |
+|----------|-------------|-------------------|
+| `REPO_URL` | URL del repositorio Git | `https://github.com/RomeroxAlex/sic135-cooperativa-be.git` |
+| `REPO_DIR` | Directorio de clonación | `./sic135-cooperativa-be` |
+| `REPO_BRANCH` | Rama del repositorio | `main` |
+| `IMAGE_NAME` | Nombre de la imagen Docker | `sic135-postgres` |
+| `CONTAINER_NAME` | Nombre del contenedor | `sic135-postgres-db` |
+| `VOLUME_NAME` | Nombre del volumen de datos | `sic135-postgres-data` |
+| `POSTGRES_USER` | Usuario de PostgreSQL | `postgres` |
+| `POSTGRES_PASSWORD` | Contraseña de PostgreSQL | `postgres` |
+| `POSTGRES_DB` | Nombre de la base de datos | `contabilidad` |
+| `POSTGRES_PORT` | Puerto de exposición | `5432` |
+| `FORCE_VOLUME_DELETE` | Omitir confirmación de borrado | `false` |
+
+#### Ejemplos de Personalización
+
+```bash
+# Cambiar usuario, contraseña y base de datos
+POSTGRES_USER=admin \
+POSTGRES_PASSWORD=mi_password_seguro \
+POSTGRES_DB=mi_base_datos \
+./deploy.sh
+
+# Usar un puerto diferente
+POSTGRES_PORT=5433 ./deploy.sh
+
+# Forzar eliminación de volumen sin confirmación (para scripts automatizados)
+FORCE_VOLUME_DELETE=true ./deploy.sh
+
+# Configuración completa personalizada
+POSTGRES_USER=admin \
+POSTGRES_PASSWORD=secreto123 \
+POSTGRES_DB=produccion \
+POSTGRES_PORT=5433 \
+IMAGE_NAME=mi-postgres \
+CONTAINER_NAME=mi-postgres-container \
+FORCE_VOLUME_DELETE=true \
+./deploy.sh
+```
+
+### Conexión a la Base de Datos
+
+Una vez que el contenedor esté en ejecución:
+
+#### Desde la línea de comandos (dentro del contenedor):
+```bash
+docker exec -it sic135-postgres-db psql -U postgres -d contabilidad
+```
+
+#### Desde un cliente externo (DBeaver, pgAdmin, etc.):
+- **Host**: `localhost`
+- **Puerto**: `5432` (o el configurado)
+- **Usuario**: `postgres` (o el configurado)
+- **Contraseña**: `postgres` (o la configurada)
+- **Base de datos**: `contabilidad` (o la configurada)
+
+#### Cadena de conexión JDBC:
+```
+jdbc:postgresql://localhost:5432/contabilidad
+```
+
+### Comandos Útiles de Administración
+
+```bash
+# Ver estado del contenedor
+docker ps -a | grep sic135-postgres-db
+
+# Ver logs del contenedor
+docker logs sic135-postgres-db
+
+# Ver logs en tiempo real
+docker logs -f sic135-postgres-db
+
+# Detener el contenedor
+docker stop sic135-postgres-db
+
+# Iniciar el contenedor
+docker start sic135-postgres-db
+
+# Reiniciar el contenedor
+docker restart sic135-postgres-db
+
+# Eliminar el contenedor (debe estar detenido)
+docker rm sic135-postgres-db
+
+# Eliminar el volumen de datos (CUIDADO: borra todos los datos)
+docker volume rm sic135-postgres-data
+
+# Crear un backup de la base de datos actual
+docker exec sic135-postgres-db pg_dump -U postgres -d contabilidad -Fc > nuevo_backup.dump
+```
+
+### Solución de Problemas
+
+#### El contenedor no inicia
+1. Verificar que el archivo `backup.dump` existe en la raíz del proyecto
+2. Revisar los logs: `docker logs sic135-postgres-db`
+3. Verificar que el puerto 5432 no esté en uso: `lsof -i :5432`
+
+#### Error de restauración
+1. Verificar que el backup es formato custom (`pg_dump -Fc`)
+2. Revisar los logs de restauración en el contenedor
+3. Si hay errores de objetos existentes, es normal y la restauración continúa
+
+#### No se puede conectar a la base de datos
+1. Verificar que el contenedor está corriendo: `docker ps`
+2. Esperar unos segundos para que PostgreSQL termine de iniciar
+3. Verificar el puerto configurado
+
+#### Forzar una nueva restauración
+Para restaurar el backup nuevamente, eliminar el volumen de datos:
+```bash
+docker stop sic135-postgres-db
+docker rm sic135-postgres-db
+docker volume rm sic135-postgres-data
+./deploy.sh
+```
