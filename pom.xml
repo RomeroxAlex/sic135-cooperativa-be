@@ -86,7 +86,7 @@
                 <version>3.10</version>
                 <configuration>
                     <installDirectory>
-                        /home/jordi/open_liberty/wlp
+                        /home/christopher/open_liberty/wlp
                     </installDirectory>
                             <serverName>sic135_contabilidad</serverName>
                 </configuration>
