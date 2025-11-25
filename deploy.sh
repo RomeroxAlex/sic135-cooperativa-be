@@ -35,6 +35,9 @@ POSTGRES_DB="${POSTGRES_DB:-contabilidad}"
 # Puerto donde exponer PostgreSQL
 POSTGRES_PORT="${POSTGRES_PORT:-5432}"
 
+# Forzar eliminación de volumen sin confirmación (usar con cuidado)
+FORCE_VOLUME_DELETE="${FORCE_VOLUME_DELETE:-false}"
+
 # ============================================
 # FUNCIONES
 # ============================================
@@ -89,8 +92,21 @@ fi
 echo_step "Paso 3: Eliminar volumen anterior"
 
 if docker volume ls --format '{{.Name}}' | grep -q "^${VOLUME_NAME}$"; then
-    echo "Eliminando volumen $VOLUME_NAME para forzar restauración..."
-    docker volume rm "$VOLUME_NAME"
+    if [ "$FORCE_VOLUME_DELETE" = "true" ]; then
+        echo "Eliminando volumen $VOLUME_NAME para forzar restauración..."
+        docker volume rm "$VOLUME_NAME"
+    else
+        echo "ADVERTENCIA: Se eliminará el volumen $VOLUME_NAME"
+        echo "Esto borrará TODOS los datos de la base de datos."
+        read -p "¿Desea continuar? (s/N): " confirm
+        if [ "$confirm" = "s" ] || [ "$confirm" = "S" ]; then
+            echo "Eliminando volumen $VOLUME_NAME..."
+            docker volume rm "$VOLUME_NAME"
+        else
+            echo "Operación cancelada. Use FORCE_VOLUME_DELETE=true para omitir confirmación."
+            exit 0
+        fi
+    fi
 else
     echo "No hay volumen existente para eliminar"
 fi
