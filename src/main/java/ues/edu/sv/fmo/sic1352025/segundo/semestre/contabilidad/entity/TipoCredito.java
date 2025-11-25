@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +34,7 @@ public class TipoCredito implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id_tipo_credito")
+    @Column(name = "id_tipo_credito", columnDefinition = "uuid")
     private UUID idTipoCredito;
     @Column(name = "nombre")
     private String nombre;
@@ -41,8 +42,10 @@ public class TipoCredito implements Serializable {
     private String descripcion;
     @Column(name = "documentacion")
     private String documentacion;
+
     @OneToMany(mappedBy = "idTipoCredito")
     private Collection<TipoCreditoCaracteristica> tipoCreditoCaracteristicaCollection;
+
     @OneToMany(mappedBy = "idTipoCredito")
     private Collection<Credito> creditoCollection;
 
@@ -85,6 +88,7 @@ public class TipoCredito implements Serializable {
         this.documentacion = documentacion;
     }
 
+    @JsonbTransient
     public Collection<TipoCreditoCaracteristica> getTipoCreditoCaracteristicaCollection() {
         return tipoCreditoCaracteristicaCollection;
     }
@@ -93,6 +97,7 @@ public class TipoCredito implements Serializable {
         this.tipoCreditoCaracteristicaCollection = tipoCreditoCaracteristicaCollection;
     }
 
+    @JsonbTransient
     public Collection<Credito> getCreditoCollection() {
         return creditoCollection;
     }

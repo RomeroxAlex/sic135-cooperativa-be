@@ -24,7 +24,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "cuenta_operacion")
 @NamedQueries({
-    @NamedQuery(name = "CuentaOperacion.findAll", query = "SELECT c FROM CuentaOperacion c")})
+    @NamedQuery(name = "CuentaOperacion.findAll", query = "SELECT c FROM CuentaOperacion c"),
+    @NamedQuery(name = "CuentaOperacion.findNaturalezaCuentaOperacion", query = "SELECT co.naturaleza\n" + //
+                "FROM CuentaOperacion co\n" + //
+                "WHERE co.idCuentaContable = :cuentaContable\n" + //
+                "  AND co.idOperacionBancaria.nombre = :nombre")
+})
 public class CuentaOperacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +43,13 @@ public class CuentaOperacion implements Serializable {
     @JoinColumn(name = "id_operacion_bancaria", referencedColumnName = "id_operacion_bancaria", columnDefinition = "uuid")
     @ManyToOne
     private OperacionBancaria idOperacionBancaria;
+
+    @JoinColumn(name = "id_tipo_cuenta_operacion", referencedColumnName = "id_tipo_cuenta_operacion", columnDefinition = "uuid")
+    @ManyToOne
+    private TipoCuentaOperacion idTipoCuentaOperacion;
+
+    @Column(name = "naturaleza")
+    private String naturaleza;
 
     public CuentaOperacion() {
     }
@@ -68,6 +80,16 @@ public class CuentaOperacion implements Serializable {
 
     public void setIdOperacionBancaria(OperacionBancaria idOperacionBancaria) {
         this.idOperacionBancaria = idOperacionBancaria;
+    }
+
+    
+
+    public String getNaturaleza() {
+        return naturaleza;
+    }
+
+    public void setNaturaleza(String naturaleza) {
+        this.naturaleza = naturaleza;
     }
 
     @Override

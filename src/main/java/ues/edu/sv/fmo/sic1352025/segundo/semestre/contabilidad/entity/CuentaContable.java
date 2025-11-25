@@ -31,7 +31,10 @@ import jakarta.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "CuentaContable.findAll", query = "SELECT c FROM CuentaContable c"),
     @NamedQuery(name = "CuentaContable.findByNombre", query = "SELECT c FROM CuentaContable c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "CuentaContable.findByCodigo", query = "SELECT c FROM CuentaContable c WHERE c.codigo = :codigo")})
+    @NamedQuery(name = "CuentaContable.findByCodigo", query = "SELECT c FROM CuentaContable c WHERE c.codigo = :codigo"),
+    @NamedQuery(name = "CuentaContable.findByNameOperacionBancaria", query = "SELECT co.idCuentaContable FROM CuentaOperacion co WHERE co.idOperacionBancaria.nombre = :nombre")
+
+})
 public class CuentaContable implements Serializable {
 
     private static final long serialVersionUID = 1L;

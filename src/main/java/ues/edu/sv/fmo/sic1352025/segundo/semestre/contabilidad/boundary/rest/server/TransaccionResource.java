@@ -27,4 +27,11 @@ public class TransaccionResource implements Serializable{
         }
         return Response.ok(listTransacciones).build();
     }
+
+    /**
+     * METHOD POST ASIENTOS CONTABLES
+     */
+    
+
+
 }

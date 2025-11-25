@@ -31,12 +31,13 @@ public class TipoCuentaContableResource implements Serializable {
     @Produces({MediaType.APPLICATION_JSON})
     public Response findAll(){
         List<TipoCuentaContable> listTipoCuentaContables = tipoCuentaContableBean.findAll();
-        if(listTipoCuentaContables != null){
+        if(listTipoCuentaContables == null){
             return Response.serverError().build();
         }
         return Response.ok(listTipoCuentaContables).build();
     }
-      @POST
+
+    @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response crearCuentaContable (TipoCuentaContable tipoCuentaContable, @Context UriInfo uriInfo){

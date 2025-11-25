@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import java.io.Serializable;
+
 import jakarta.persistence.PersistenceContext;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaBancaria;
 
@@ -28,4 +29,6 @@ public class CuentaBancariaBean extends AbstractDataPersist<CuentaBancaria> impl
     public EntityManager getEntityManager() {
         return em;
     }
+
+   
 }

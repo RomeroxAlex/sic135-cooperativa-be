@@ -5,10 +5,12 @@
 package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -42,11 +44,12 @@ public class Transaccion implements Serializable {
     private UUID idTransaccion;
     @Column(name = "descripcion")
     private String descripcion;
-    @Column(name = "fecha")
+    @Column(name = "fecha", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Column(name = "monto")
-    private BigInteger monto;
+    private BigDecimal monto;
     @Column(name = "moneda")
     private String moneda;
     @OneToMany(mappedBy = "idTransaccion")
@@ -83,11 +86,11 @@ public class Transaccion implements Serializable {
         this.fecha = fecha;
     }
 
-    public BigInteger getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(BigInteger monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 

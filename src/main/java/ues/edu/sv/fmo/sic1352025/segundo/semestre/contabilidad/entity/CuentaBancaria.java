@@ -29,7 +29,8 @@ import jakarta.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "CuentaBancaria.findAll", query = "SELECT c FROM CuentaBancaria c"),
     @NamedQuery(name = "CuentaBancaria.findByActivo", query = "SELECT c FROM CuentaBancaria c WHERE c.activo = :activo"),
-    @NamedQuery(name = "CuentaBancaria.findBySaldo", query = "SELECT c FROM CuentaBancaria c WHERE c.saldo = :saldo")})
+    @NamedQuery(name = "CuentaBancaria.findBySaldo", query = "SELECT c FROM CuentaBancaria c WHERE c.saldo = :saldo"),
+})
 public class CuentaBancaria implements Serializable {
 
     private static final long serialVersionUID = 1L;

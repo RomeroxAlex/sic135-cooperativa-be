@@ -5,14 +5,16 @@
 package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -47,18 +49,22 @@ public class Credito implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     @Column(name = "interes")
-    private BigInteger interes;
+    private BigDecimal interes;
     @Column(name = "monto")
-    private BigInteger monto;
+    private BigDecimal monto;
     @Column(name = "documentacion")
     private String documentacion;
     @Column(name = "activo")
     private Boolean activo;
     @OneToMany(mappedBy = "idCredito")
     private Collection<CreditoSocio> creditoSocioCollection;
-    @JoinColumn(name = "id_tipo_credito", referencedColumnName = "id_tipo_credito")
-    @ManyToOne
+
+    @JoinColumn(name = "id_tipo_credito", referencedColumnName = "id_tipo_credito", columnDefinition = "uuid")
+    @ManyToOne(fetch = FetchType.LAZY )
     private TipoCredito idTipoCredito;
+
+    @Column(name = "fecha_vencimiento")
+    private Date fechaVencimiento;
 
     public Credito() {
     }
@@ -83,19 +89,19 @@ public class Credito implements Serializable {
         this.fecha = fecha;
     }
 
-    public BigInteger getInteres() {
+    public BigDecimal getInteres() {
         return interes;
     }
 
-    public void setInteres(BigInteger interes) {
+    public void setInteres(BigDecimal interes) {
         this.interes = interes;
     }
 
-    public BigInteger getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(BigInteger monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
@@ -115,6 +121,7 @@ public class Credito implements Serializable {
         this.activo = activo;
     }
 
+    @JsonbTransient
     public Collection<CreditoSocio> getCreditoSocioCollection() {
         return creditoSocioCollection;
     }
@@ -123,6 +130,7 @@ public class Credito implements Serializable {
         this.creditoSocioCollection = creditoSocioCollection;
     }
 
+    @JsonbTransient
     public TipoCredito getIdTipoCredito() {
         return idTipoCredito;
     }
