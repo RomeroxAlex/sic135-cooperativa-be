@@ -25,6 +25,20 @@
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoEmpleado</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoTarjetaBancaria</class>
         <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Transaccion</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.AsientoContable</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.DetalleAsiento</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.TipoCuentaOperacion</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.PeriodoContable</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.PartidaDiario</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.DetallePartidaDiario</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.PartidaAjuste</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.LibroMayor</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.BalanzaComprobacion</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.EstadoFinanciero</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.DetalleEstadoFinanciero</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Factura</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.DetalleFactura</class>
+        <class>ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.ReporteVentas</class>
         <properties>
             <property name="eclipselink.target-database" value="PostgreSQL"/>
         </properties>
