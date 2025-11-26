@@ -3,6 +3,7 @@ package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +33,9 @@ public class DetalleAsiento implements Serializable{
 
     @Column(name = "haber") 
     private BigDecimal haber;
+
+    @Column(name = "fecha")
+    private Date fecha;
 
     public DetalleAsiento() {}
 
@@ -79,6 +83,18 @@ public class DetalleAsiento implements Serializable{
     public void setHaber(BigDecimal haber) {
         this.haber = haber;
     }
+
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    
 
 
     

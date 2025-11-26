@@ -5,10 +5,11 @@
 package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,13 +42,16 @@ public class CuentaBancaria implements Serializable {
     @Column(name = "activo")
     private Boolean activo;
     @Column(name = "saldo")
-    private BigInteger saldo;
+    private BigDecimal saldo;
+
     @JoinColumn(name = "id_socio", referencedColumnName = "id_socio")
     @ManyToOne
     private Socio idSocio;
+
     @JoinColumn(name = "id_tipo_cuenta_bancaria", referencedColumnName = "id_tipo_cuenta_bancaria")
     @ManyToOne
     private TipoCuentaBancaria idTipoCuentaBancaria;
+
     @OneToMany(mappedBy = "idCuentaBancaria")
     private Collection<TarjetaBancaria> tarjetaBancariaCollection;
 
@@ -74,11 +78,11 @@ public class CuentaBancaria implements Serializable {
         this.activo = activo;
     }
 
-    public BigInteger getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(BigInteger saldo) {
+    public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
     }
 
@@ -98,6 +102,7 @@ public class CuentaBancaria implements Serializable {
         this.idTipoCuentaBancaria = idTipoCuentaBancaria;
     }
 
+    @JsonbTransient
     public Collection<TarjetaBancaria> getTarjetaBancariaCollection() {
         return tarjetaBancariaCollection;
     }

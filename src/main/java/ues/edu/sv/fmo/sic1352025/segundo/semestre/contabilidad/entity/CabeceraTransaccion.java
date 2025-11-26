@@ -5,7 +5,7 @@
 package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -47,16 +47,20 @@ public class CabeceraTransaccion implements Serializable {
     private Date fecha;
     @Column(name = "tabla_origen")
     private String tablaOrigen;
+    
     @Lob
     @Column(name = "id_origen")
     private UUID idOrigen;
+
     @Column(name = "observaciones")
     private String observaciones;
+
     @Lob
     @Column(name = "id_socio")
     private UUID idSocio;
+
     @Column(name = "monto")
-    private BigInteger monto;
+    private BigDecimal monto;
     @Column(name = "moneda")
     private String moneda;
     @JoinColumn(name = "id_operacion_bancaria", referencedColumnName = "id_operacion_bancaria")
@@ -121,11 +125,11 @@ public class CabeceraTransaccion implements Serializable {
         this.idSocio = idSocio;
     }
 
-    public BigInteger getMonto() {
+    public BigDecimal getMonto() {
         return monto;
     }
 
-    public void setMonto(BigInteger monto) {
+    public void setMonto(BigDecimal monto) {
         this.monto = monto;
     }
 
