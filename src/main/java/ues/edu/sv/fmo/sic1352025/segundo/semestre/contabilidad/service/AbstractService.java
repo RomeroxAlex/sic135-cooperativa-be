@@ -28,4 +28,6 @@ public abstract class AbstractService {
         return detalleAsiento;
     }
 
+    /* METODO GLOBAL PARA LAS GENERACIONES, NECESITO EL FACTORY */
+
 }

@@ -37,7 +37,6 @@ public class CuentaBancariaService extends AbstractService{
         String operacionBancaria = OperacionesBancarias.APERTURA_CUENTA.name();
         /* CREAMOS LA CUENTA BANCARIA */
         UUID idCuentaBancaria = UUID.randomUUID();
-        System.err.println(cuentaBancariaDTO);
         CuentaBancaria cuentaBancaria = cuentaBancariaDTO.getCuentaBancaria();
         UUID idSocio = cuentaBancaria.getIdSocio().getIdSocio();
        
@@ -60,9 +59,9 @@ public class CuentaBancariaService extends AbstractService{
 
     /* SE PUEDE NORMALIZAR LO DE LOS ASIENTOS Y DEMÁS */
 
-    public UUID aporteBancaria(CuentaBancariaDTO cuentaBancariaDTO){
+    public UUID aporteCuenta(CuentaBancariaDTO cuentaBancariaDTO){
 
-        String operacionBancaria = OperacionesBancarias.APORTACION_CREDITO.name();
+        String operacionBancaria = OperacionesBancarias.APORTACION_CUENTA.name();
 
         /* APORTE SUMAMOS EN UPDATE A LA CUENTA BANCARIA DTO VIENE CON MONTO DE TRASACCION
             RECUPERAR CREDITO ORIGINAL
@@ -71,6 +70,47 @@ public class CuentaBancariaService extends AbstractService{
         */
 
         /* OBTENEMOS LA ENTITY CON VALOR ORIGINAL DESDE BD */
+        CuentaBancaria cuentaBancaria = cuentaBancariaDTO.getCuentaBancaria();
+        UUID idCuentaBancaria = cuentaBancaria.getIdCuentaBancaria();
+        CuentaBancaria cuentaBancariaBD = cuentaBancariaBean.findById(idCuentaBancaria);
+
+        /* ACTUALIZAMOS MONTOS */
+        BigDecimal montoBD = cuentaBancariaBD.getSaldo();
+        BigDecimal montoAporte = cuentaBancaria.getSaldo();
+
+        BigDecimal monto = montoBD.add(montoAporte);
+
+        /* ACTUALIZAMOS ENTITY A HACER UPDATE */
+        cuentaBancaria.setSaldo(monto);
+
+        UUID idSocio = cuentaBancaria.getIdSocio().getIdSocio();
+       
+        cuentaBancaria.setIdCuentaBancaria(idCuentaBancaria);
+        
+        cuentaBancariaBean.updateEntity(cuentaBancaria);
+
+        // BigDecimal monto = cuentaBancaria.getSaldo();
+        
+        /*CUENTAS ASOCIADAS A LA OPERACION */
+        List<CuentaContable> listCuentasContablesAsociadas = cuentaContableBean.findByNameOperacionBancaria(operacionBancaria);
+
+        /* GENERAMOS ASIENTOS Y DETALLE ASIENTO */
+        asientoService.generarAsientoContable(listCuentasContablesAsociadas, monto, operacionBancaria);
+
+        /* GENERAMOS LA CABECERA DE LA TRANSACCION */
+        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCuentaBancaria, TablaOrigen.CUENTA_BANCARIA.getTablaOrigen(), operacionBancaria, idSocio);
+        
+        return idCuentaBancaria;
+    }   
+
+    public void retiroCuenta(CuentaBancariaDTO cuentaBancariaDTO){
+
+        if(cuentaBancariaDTO == null) {
+            return;
+        } 
+
+        String operacionBancaria = OperacionesBancarias.RETIRO_CUENTA.name();
+         /* OBTENEMOS LA ENTITY CON VALOR ORIGINAL DESDE BD */
         CuentaBancaria cuentaBancaria = cuentaBancariaDTO.getCuentaBancaria();
         UUID idCuentaBancaria = cuentaBancaria.getIdCuentaBancaria();
         CuentaBancaria cuentaBancariaBD = cuentaBancariaBean.findById(idCuentaBancaria);
@@ -88,7 +128,7 @@ public class CuentaBancariaService extends AbstractService{
        
         cuentaBancaria.setIdCuentaBancaria(idCuentaBancaria);
         
-        cuentaBancariaBean.updateEntity(cuentaBancariaBD);
+        cuentaBancariaBean.updateEntity(cuentaBancaria);
 
         // BigDecimal monto = cuentaBancaria.getSaldo();
         
@@ -99,10 +139,11 @@ public class CuentaBancariaService extends AbstractService{
         asientoService.generarAsientoContable(listCuentasContablesAsociadas, monto, operacionBancaria);
 
         /* GENERAMOS LA CABECERA DE LA TRANSACCION */
-        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCuentaBancaria, operacionBancaria, operacionBancaria, idSocio);
+        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCuentaBancaria, TablaOrigen.CUENTA_BANCARIA.getTablaOrigen(), operacionBancaria, idSocio);
         
-        return idCuentaBancaria;
-    }   
+        
+
+    }
    
 
 }

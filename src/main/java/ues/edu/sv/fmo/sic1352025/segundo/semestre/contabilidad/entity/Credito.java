@@ -45,6 +45,7 @@ public class Credito implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_credito")
     private UUID idCredito;
+
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -73,7 +74,7 @@ public class Credito implements Serializable {
         this.idCredito = idCredito;
     }
 
-    public Object getIdCredito() {
+    public UUID getIdCredito() {
         return idCredito;
     }
 

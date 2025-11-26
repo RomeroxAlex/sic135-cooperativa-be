@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -123,7 +124,7 @@ public class CuentaBancariaResource {
     }
 
     /**
-     * POST /cuentas-bancarias - APERTURA_CUENTA
+     * POST-APERTURA_CUENTA
      */
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -137,4 +138,36 @@ public class CuentaBancariaResource {
             return Response.serverError().build();
         }
     }
+
+    /*
+    * APORTE DE CUENTA PUT 
+    */
+   @PUT
+   @Path("/aporte")
+   @Consumes({MediaType.APPLICATION_JSON})
+   @Produces({MediaType.APPLICATION_JSON})
+   public Response aporteCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO){
+        try {
+            cuentaBancariaService.aporteCuenta(cuentaBancariaDTO);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            // TODO: handle exception
+            return Response.serverError().build();
+        }
+    }
+    
+    @PUT
+    @Path("/retiro")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response retiroCuentaBancaria(CuentaBancariaDTO cuentaBancariaDTO){
+        try {
+            cuentaBancariaService.retiroCuenta(cuentaBancariaDTO);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            // TODO: handle exception
+            return Response.serverError().build();
+        }
+    }
+
 }
