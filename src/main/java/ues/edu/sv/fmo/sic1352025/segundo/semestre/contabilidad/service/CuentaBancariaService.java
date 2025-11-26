@@ -14,6 +14,7 @@ import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.dto.CuentaBancari
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaBancaria;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaContable;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.OperacionesBancarias;
+import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.TablaOrigen;
 
 @Stateless
 public class CuentaBancariaService extends AbstractService{
@@ -51,8 +52,8 @@ public class CuentaBancariaService extends AbstractService{
         /* GENERAMOS ASIENTOS Y DETALLE ASIENTO */
         asientoService.generarAsientoContable(listCuentasContablesAsociadas, monto, operacionBancaria);
 
-        /* GENERAMOS LA CABECERA DE LA TRANSACCION */
-        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCuentaBancaria, operacionBancaria, operacionBancaria, idSocio);
+        /* GENERAMOS LA CABECERA DE LA TRANSACCION */ /* TABLA ORIGEN -> cuenta_bancaria */
+        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCuentaBancaria, TablaOrigen.CUENTA_BANCARIA.getTablaOrigen(), operacionBancaria, idSocio);
         
         return idCuentaBancaria;
     }   

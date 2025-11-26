@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,6 +53,7 @@ public class Transaccion implements Serializable {
     private BigDecimal monto;
     @Column(name = "moneda")
     private String moneda;
+
     @OneToMany(mappedBy = "idTransaccion")
     private Collection<CabeceraTransaccion> cabeceraTransaccionCollection;
 
@@ -102,6 +104,7 @@ public class Transaccion implements Serializable {
         this.moneda = moneda;
     }
 
+    @JsonbTransient
     public Collection<CabeceraTransaccion> getCabeceraTransaccionCollection() {
         return cabeceraTransaccionCollection;
     }

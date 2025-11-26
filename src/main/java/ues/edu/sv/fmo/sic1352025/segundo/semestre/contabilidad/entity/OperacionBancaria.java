@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,6 +37,7 @@ public class OperacionBancaria implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "id_operacion_bancaria")
+
     private UUID idOperacionBancaria;
     @Column(name = "nombre")
     private String nombre;
@@ -47,8 +49,10 @@ public class OperacionBancaria implements Serializable {
     private Boolean estado;
     @Column(name = "debe_haber")
     private String debeHaber;
+
     @OneToMany(mappedBy = "idOperacionBancaria")
     private Collection<CabeceraTransaccion> cabeceraTransaccionCollection;
+
     @OneToMany(mappedBy = "idOperacionBancaria")
     private Collection<CuentaOperacion> cuentaOperacionCollection;
 
@@ -107,6 +111,7 @@ public class OperacionBancaria implements Serializable {
         this.debeHaber = debeHaber;
     }
 
+    @JsonbTransient
     public Collection<CabeceraTransaccion> getCabeceraTransaccionCollection() {
         return cabeceraTransaccionCollection;
     }
@@ -115,6 +120,7 @@ public class OperacionBancaria implements Serializable {
         this.cabeceraTransaccionCollection = cabeceraTransaccionCollection;
     }
 
+    @JsonbTransient
     public Collection<CuentaOperacion> getCuentaOperacionCollection() {
         return cuentaOperacionCollection;
     }
