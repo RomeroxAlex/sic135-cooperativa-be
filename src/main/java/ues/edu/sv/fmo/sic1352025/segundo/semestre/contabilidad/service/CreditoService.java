@@ -11,6 +11,7 @@ import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CreditoBe
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CreditoSocioBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CuentaContableBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CuentaOperacionBean;
+import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.DetalleAsientoBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.OperacionBancariaBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.SocioBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.TransaccionBean;
@@ -65,7 +66,7 @@ public class CreditoService {
     // List<TipoCuentaOperacion> listTipoCuentaOperacion;
 
     /**
-     *  DEBERÍA RETURN LOS ID'S PARA FORMAR LAS URI NO?
+     *  DEBERÍA RETURN LOS ID'S PARA FORMAR LAS URI
      * @return
      */
     public UUID serviceCrearCredito(CreditoDTO creditoDTO){
@@ -106,6 +107,7 @@ public class CreditoService {
          */
 
         /* CREDITO */
+        credito.setFecha(fecha);
         credito.setIdCredito(idCredito);
         creditoBean.persistEntity(credito);
 
@@ -117,7 +119,6 @@ public class CreditoService {
         creditoSocio.setActivo(true);   
         creditoSocioBean.persistEntity(creditoSocio);
         
-        System.out.println("Antes del bucle");
         /* GENERAR DETALLE ASIENTO CON BUCLE */
         for(CuentaContable cuentaContable: listCuentasContablesAsociadas){
             DetalleAsiento detalleAsiento = new DetalleAsiento(UUID.randomUUID());
@@ -126,7 +127,6 @@ public class CreditoService {
             // String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion(OperacionesBancarias.APERTURA_CREDITO.toString(), cuentaContable);
             String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion("APERTURA_CREDITO", cuentaContable);
             String naturalezaCuenta = cuentaContable.getNaturaleza();
-            System.out.println("Valor Naturaleza: "+  naturalezaCuenta);
             // Depende de la operacion realmente es condicional
 
             if(naturalezaCuenta.equals("DEUDORA")){
@@ -179,6 +179,51 @@ public class CreditoService {
         cabeceraTransaccionBean.persistEntity(cabeceraTransaccion);
         */
         return idCredito;
+    }
+
+    public void generaDetallesAsiento(BigDecimal totalDebe, BigDecimal totalHaber, List<CuentaContable> listCuentasContablesAsociadas, BigDecimal monto, AsientoContable asientoContable){
+        for(CuentaContable cuentaContable: listCuentasContablesAsociadas){
+            DetalleAsiento detalleAsiento = new DetalleAsiento(UUID.randomUUID());
+
+            /*  QUERIE DETERMINAR ENTRADA O SALIDA SEGÚN RELACION CUENTA-OPERACION*/
+            // String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion(OperacionesBancarias.APERTURA_CREDITO.toString(), cuentaContable);
+            String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion("APERTURA_CREDITO", cuentaContable);
+            String naturalezaCuenta = cuentaContable.getNaturaleza();
+            // Depende de la operacion realmente es condicional
+
+            if(naturalezaCuenta.equals("DEUDORA")){
+                // DEUDORA + ENTRADA = DEBE
+                if (naturalezaDetalleAsiento.equals("ENTRADA")) {
+                    totalDebe = totalDebe.add(monto);
+                    detalleAsiento.setDebe(monto);
+                    detalleAsiento.setIdAsientoContable(asientoContable);
+                    detalleAsiento.setIdCuentaContable(cuentaContable);
+                }else{ // DEUDORA + SALIDA = HABER
+
+                    totalHaber = totalHaber.add(monto);
+                    detalleAsiento.setHaber(monto);
+                    detalleAsiento.setIdAsientoContable(asientoContable);
+                    detalleAsiento.setIdCuentaContable(cuentaContable);
+                }
+
+            }else{
+                // ACREEDORA + ENTRADA = HABER
+                if(naturalezaDetalleAsiento.equals("ENTRADA")){
+                    totalHaber = totalHaber.add(monto);
+                    detalleAsiento.setHaber(monto);
+                    detalleAsiento.setIdAsientoContable(asientoContable);
+                    detalleAsiento.setIdCuentaContable(cuentaContable);
+                }else{ // ACREEDORA + SALIDA = DEBE
+                    totalDebe = totalDebe.add(monto);
+                    detalleAsiento.setDebe(monto);
+                    detalleAsiento.setIdAsientoContable(asientoContable);
+                    detalleAsiento.setIdCuentaContable(cuentaContable);
+                }
+
+            }   
+            detalleAsientoBean.persistEntity(detalleAsiento);
+        }
+
     }
 
 }
