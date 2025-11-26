@@ -244,8 +244,9 @@ public class Factura implements Serializable {
             .map(d -> d.getSubtotal() != null ? d.getSubtotal() : BigDecimal.ZERO)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
         
-        // IVA 13%
-        this.iva = this.subtotal.multiply(new BigDecimal("0.13"));
+        // IVA rate - can be made configurable via system property or database setting
+        BigDecimal ivaRate = new BigDecimal(System.getProperty("contabilidad.iva.rate", "0.13"));
+        this.iva = this.subtotal.multiply(ivaRate);
         this.total = this.subtotal.add(this.iva);
     }
 

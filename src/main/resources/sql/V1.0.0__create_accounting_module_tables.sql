@@ -255,7 +255,8 @@ CREATE OR REPLACE FUNCTION validate_partida_balance()
 RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.total_debe IS NOT NULL AND NEW.total_haber IS NOT NULL THEN
-        IF NEW.total_debe != NEW.total_haber THEN
+        -- Use tolerance for rounding differences in accounting calculations
+        IF ABS(NEW.total_debe - NEW.total_haber) > 0.01 THEN
             RAISE EXCEPTION 'La partida no está balanceada: Debe (%) != Haber (%)', NEW.total_debe, NEW.total_haber;
         END IF;
     END IF;

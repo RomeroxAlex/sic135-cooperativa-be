@@ -355,10 +355,19 @@ public class PartidaAjusteService {
     }
 
     /**
-     * Generate sequential adjustment number for the period.
+     * Generate sequential adjustment number for the period using MAX query.
      */
     private Integer generateNumeroAjuste(PeriodoContable periodo) {
         List<PartidaAjuste> ajustes = partidaAjusteBean.findByPeriodo(periodo);
-        return ajustes != null ? ajustes.size() + 1 : 1;
+        if (ajustes == null || ajustes.isEmpty()) {
+            return 1;
+        }
+        // Get max existing number to avoid duplicates
+        int maxNumero = ajustes.stream()
+            .map(PartidaAjuste::getNumeroAjuste)
+            .filter(n -> n != null)
+            .max(Integer::compareTo)
+            .orElse(0);
+        return maxNumero + 1;
     }
 }

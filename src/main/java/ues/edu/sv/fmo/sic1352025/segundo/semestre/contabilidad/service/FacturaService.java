@@ -255,11 +255,31 @@ public class FacturaService {
     }
 
     /**
-     * Generate sequential invoice number.
+     * Generate sequential invoice number using MAX query for reliability.
      */
     private String generarNumeroFactura(String serie) {
         List<Factura> todas = facturaBean.findAll();
-        int numero = todas != null ? todas.size() + 1 : 1;
+        int numero = 1;
+        if (todas != null && !todas.isEmpty()) {
+            // Extract max number from existing invoices to avoid duplicates
+            numero = todas.stream()
+                .map(Factura::getNumeroFactura)
+                .filter(n -> n != null)
+                .map(n -> {
+                    try {
+                        // Extract numeric part after the hyphen
+                        String[] parts = n.split("-");
+                        if (parts.length > 1) {
+                            return Integer.parseInt(parts[parts.length - 1]);
+                        }
+                        return 0;
+                    } catch (NumberFormatException e) {
+                        return 0;
+                    }
+                })
+                .max(Integer::compareTo)
+                .orElse(0) + 1;
+        }
         return String.format("%s-%08d", serie != null ? serie : "A", numero);
     }
 }
