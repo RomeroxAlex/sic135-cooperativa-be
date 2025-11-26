@@ -5,30 +5,16 @@ import java.util.UUID;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.AsientoContableBean;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CabeceraTransaccionBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CreditoBean;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CreditoSocioBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CuentaContableBean;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CuentaOperacionBean;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.DetalleAsientoBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.OperacionBancariaBean;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.SocioBean;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.TransaccionBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.dto.CreditoDTO;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.AsientoContable;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Credito;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CreditoSocio;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.CuentaContable;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.DetalleAsiento;
-import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Socio;
-// import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.NaturalezaContable;
-// import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.NaturalezaOperacion;
-// import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.OperacionesBancarias;
-// import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.TablaOrigen;
+import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.OperacionesBancarias;
+import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.enums.TablaOrigen;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Stateless
 public class CreditoService {
@@ -36,32 +22,19 @@ public class CreditoService {
     @Inject
     CreditoBean creditoBean;
 
-    @Inject
-    AsientoContableBean asientoContableBean;
-
-    @Inject
-    CreditoSocioBean creditoSocioBean;
-
-    @Inject
-    CabeceraTransaccionBean cabeceraTransaccionBean;
-
-    @Inject
-    TransaccionBean transaccionBean;
-
-    @Inject
-    SocioBean socioBean;
-
     @Inject 
     OperacionBancariaBean operacionBancariaBean;
 
-    @Inject
-    DetalleAsientoBean detalleAsientoBean;
-
+   
     @Inject
     CuentaContableBean cuentaContableBean;
 
+
     @Inject
-    CuentaOperacionBean cuentaOperacionBean;
+    AsientoService asientoService;
+
+    @Inject
+    CabeceraTransaccionService cabeceraTransaccionService;
 
     // List<TipoCuentaOperacion> listTipoCuentaOperacion;
 
@@ -69,6 +42,7 @@ public class CreditoService {
      *  DEBERÍA RETURN LOS ID'S PARA FORMAR LAS URI
      * @return
      */
+    /* 
     public UUID serviceCrearCredito(CreditoDTO creditoDTO){
 
         BigDecimal totalHaber = BigDecimal.ZERO;
@@ -80,6 +54,7 @@ public class CreditoService {
         */
         // OperacionBancaria operacionBancaria = operacionBancariaBean.findById(fecha);
         //List<CuentaContable> listCuentasContablesAsociadas = cuentaContableBean.findByNameOperacionBancaria(OperacionesBancarias.APERTURA_CREDITO.toString());
+        /* 
         List<CuentaContable> listCuentasContablesAsociadas = cuentaContableBean.findByNameOperacionBancaria("APERTURA_CREDITO");
 
 
@@ -87,7 +62,7 @@ public class CreditoService {
         /**
          * SEPARAMOS LOS DATOS DEL DTO
          * CREDITO DTO LA OPERACION ES CREDITO
-         */
+         
         Credito credito = creditoDTO.getCredito();
         UUID idSocio = creditoDTO.getIdSocio();
         
@@ -106,12 +81,12 @@ public class CreditoService {
          * TRANSACCION
          */
 
-        /* CREDITO */
+        /* CREDITO 
         credito.setFecha(fecha);
         credito.setIdCredito(idCredito);
         creditoBean.persistEntity(credito);
 
-        /* CREDITO_SOCIO */
+        /* CREDITO_SOCIO 
         CreditoSocio creditoSocio = new CreditoSocio(UUID.randomUUID());
         Socio socio = socioBean.findById(idSocio);
         creditoSocio.setIdCredito(credito);
@@ -119,11 +94,11 @@ public class CreditoService {
         creditoSocio.setActivo(true);   
         creditoSocioBean.persistEntity(creditoSocio);
         
-        /* GENERAR DETALLE ASIENTO CON BUCLE */
+        /* GENERAR DETALLE ASIENTO CON BUCLE 
         for(CuentaContable cuentaContable: listCuentasContablesAsociadas){
             DetalleAsiento detalleAsiento = new DetalleAsiento(UUID.randomUUID());
 
-            /*  QUERIE DETERMINAR ENTRADA O SALIDA SEGÚN RELACION CUENTA-OPERACION*/
+            /*  QUERIE DETERMINAR ENTRADA O SALIDA SEGÚN RELACION CUENTA-OPERACION
             // String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion(OperacionesBancarias.APERTURA_CREDITO.toString(), cuentaContable);
             String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion("APERTURA_CREDITO", cuentaContable);
             String naturalezaCuenta = cuentaContable.getNaturaleza();
@@ -164,7 +139,7 @@ public class CreditoService {
 
         /* ASIENTO CONTABLE */
        
-        /*SE HACE UPDATE CON LO VALORES */
+        /*SE HACE UPDATE CON LO VALORES 
         asientoContable.setTotalDebe(totalDebe);
         asientoContable.setTotalHaber(totalHaber);
         asientoContableBean.updateEntity(asientoContable);
@@ -177,53 +152,73 @@ public class CreditoService {
         cabeceraTransaccion.setIdOrigen(idCredito);
         cabeceraTransaccion.setFecha(fecha);
         cabeceraTransaccionBean.persistEntity(cabeceraTransaccion);
-        */
+        
+        return idCredito;
+    }
+    */
+
+    public UUID crearCredito(CreditoDTO creditoDTO){
+
+        String operacionBancaria = OperacionesBancarias.APERTURA_CREDITO.name();
+        /* CREAMOS EL CREDITO BANCARIO*/
+        UUID idCredito = UUID.randomUUID();
+        Credito credito = creditoDTO.getCredito();
+        UUID idSocio = creditoDTO.getIdSocio();
+
+        credito.setIdCredito(idCredito);
+        creditoBean.persistEntity(credito);
+        
+
+        BigDecimal monto = credito.getMonto();
+
+        /*CUENTAS ASOCIADAS A LA OPERACION */
+        List<CuentaContable> listCuentasContablesAsociadas = cuentaContableBean.findByNameOperacionBancaria(operacionBancaria);
+
+        /* GENERAMOS ASIENTOS Y DETALLE ASIENTO */
+        asientoService.generarAsientoContable(listCuentasContablesAsociadas, monto, operacionBancaria);
+
+        /* GENERAMOS LA CABECERA DE LA TRANSACCION */ /* TABLA ORIGEN -> cuenta_bancaria */
+        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCredito, TablaOrigen.CREDITO.getTablaOrigen(), operacionBancaria, idSocio);
+        
         return idCredito;
     }
 
-    public void generaDetallesAsiento(BigDecimal totalDebe, BigDecimal totalHaber, List<CuentaContable> listCuentasContablesAsociadas, BigDecimal monto, AsientoContable asientoContable){
-        for(CuentaContable cuentaContable: listCuentasContablesAsociadas){
-            DetalleAsiento detalleAsiento = new DetalleAsiento(UUID.randomUUID());
 
-            /*  QUERIE DETERMINAR ENTRADA O SALIDA SEGÚN RELACION CUENTA-OPERACION*/
-            // String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion(OperacionesBancarias.APERTURA_CREDITO.toString(), cuentaContable);
-            String naturalezaDetalleAsiento = cuentaOperacionBean.findNaturalezaCuentaOperacion("APERTURA_CREDITO", cuentaContable);
-            String naturalezaCuenta = cuentaContable.getNaturaleza();
-            // Depende de la operacion realmente es condicional
+    public void aporteCredito(CreditoDTO creditoDTO){
 
-            if(naturalezaCuenta.equals("DEUDORA")){
-                // DEUDORA + ENTRADA = DEBE
-                if (naturalezaDetalleAsiento.equals("ENTRADA")) {
-                    totalDebe = totalDebe.add(monto);
-                    detalleAsiento.setDebe(monto);
-                    detalleAsiento.setIdAsientoContable(asientoContable);
-                    detalleAsiento.setIdCuentaContable(cuentaContable);
-                }else{ // DEUDORA + SALIDA = HABER
+        /* CONTEXTUALIZAMOS OPERACION BANCARIA */
+        String operacionBancaria = OperacionesBancarias.APORTACION_CREDITO.name();
 
-                    totalHaber = totalHaber.add(monto);
-                    detalleAsiento.setHaber(monto);
-                    detalleAsiento.setIdAsientoContable(asientoContable);
-                    detalleAsiento.setIdCuentaContable(cuentaContable);
-                }
 
-            }else{
-                // ACREEDORA + ENTRADA = HABER
-                if(naturalezaDetalleAsiento.equals("ENTRADA")){
-                    totalHaber = totalHaber.add(monto);
-                    detalleAsiento.setHaber(monto);
-                    detalleAsiento.setIdAsientoContable(asientoContable);
-                    detalleAsiento.setIdCuentaContable(cuentaContable);
-                }else{ // ACREEDORA + SALIDA = DEBE
-                    totalDebe = totalDebe.add(monto);
-                    detalleAsiento.setDebe(monto);
-                    detalleAsiento.setIdAsientoContable(asientoContable);
-                    detalleAsiento.setIdCuentaContable(cuentaContable);
-                }
+        /* VIENE EL CREDITO DTO COMPLETO SEPARAMOS */
+        UUID idSocio = creditoDTO.getIdSocio();
+        Credito credito = creditoDTO.getCredito();
+        UUID idCredito = credito.getIdCredito();
 
-            }   
-            detalleAsientoBean.persistEntity(detalleAsiento);
-        }
+        /* OBTENEMOS CREDITO DESDE LA BD */
+        Credito creditoBD = creditoBean.findById(idCredito);
+
+        /* OBTENEMOS MONTOS PARA OPERAR */
+        BigDecimal montoBD = creditoBD.getMonto();
+        BigDecimal montoAporte = credito.getMonto();
+        BigDecimal monto = montoBD.subtract(montoAporte);
+
+        /* HACEMOS EL UPDATE DEL CREDITO A ACTUALIZAR */
+        credito.setMonto(monto);
+
+        /* HACEMOS UPDATE */
+        creditoBean.updateEntity(credito);
+
+        /* CUENTAS ASOCIADAS A LA OPERACION- ASIENTOS*/
+        List<CuentaContable> listCuentasContablesAsociadas = cuentaContableBean.findByNameOperacionBancaria(operacionBancaria);
+        /*ASIENTOS CONTABLES */
+        asientoService.generarAsientoContable(listCuentasContablesAsociadas, monto, operacionBancaria);
+
+        /*CABECERA TRANSACCION */
+        cabeceraTransaccionService.crearCabeceraTransaccion(monto, idCredito, TablaOrigen.CREDITO.getTablaOrigen(), operacionBancaria, idSocio);
 
     }
+
+
 
 }

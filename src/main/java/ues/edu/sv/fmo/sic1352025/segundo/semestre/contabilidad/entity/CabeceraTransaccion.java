@@ -63,9 +63,11 @@ public class CabeceraTransaccion implements Serializable {
     private BigDecimal monto;
     @Column(name = "moneda")
     private String moneda;
+
     @JoinColumn(name = "id_operacion_bancaria", referencedColumnName = "id_operacion_bancaria")
     @ManyToOne
     private OperacionBancaria idOperacionBancaria;
+    
     @JoinColumn(name = "id_transaccion", referencedColumnName = "id_transaccion")
     @ManyToOne
     private Transaccion idTransaccion;

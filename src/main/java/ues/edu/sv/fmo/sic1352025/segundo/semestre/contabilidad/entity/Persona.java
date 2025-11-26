@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,8 +42,10 @@ public class Persona implements Serializable {
     private String documentoIdentidad;
     @Column(name = "fotograf\u00eda")
     private String fotografía;
+
     @OneToMany(mappedBy = "idPersona")
     private Collection<Socio> socioCollection;
+
     @OneToMany(mappedBy = "idPersona")
     private Collection<Empleado> empleadoCollection;
 
@@ -85,6 +88,7 @@ public class Persona implements Serializable {
         this.fotografía = fotografía;
     }
 
+    @JsonbTransient
     public Collection<Socio> getSocioCollection() {
         return socioCollection;
     }
@@ -93,6 +97,7 @@ public class Persona implements Serializable {
         this.socioCollection = socioCollection;
     }
 
+    @JsonbTransient
     public Collection<Empleado> getEmpleadoCollection() {
         return empleadoCollection;
     }
