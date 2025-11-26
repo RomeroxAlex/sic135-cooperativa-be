@@ -1,9 +1,11 @@
 package ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.boundary.rest.server;
 
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -12,7 +14,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
+import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.control.CreditoBean;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.dto.CreditoDTO;
+import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.entity.Credito;
 import ues.edu.sv.fmo.sic1352025.segundo.semestre.contabilidad.service.CreditoService;
 
 @Path("creditos")
@@ -20,6 +24,9 @@ public class CreditoResource {
 
     @Inject
     CreditoService creditoService;
+
+    @Inject
+    CreditoBean creditoBean;
 
     @POST
     @Produces({MediaType.APPLICATION_JSON})
@@ -37,5 +44,16 @@ public class CreditoResource {
         }
     }
 
+    // Obtener todos los crédito
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response findAll(){
+        try{
+            List<Credito> listCreditos = creditoBean.findAll();
+            return Response.ok(listCreditos).build();
+        }catch(Exception ex){
+            return Response.serverError().build();
+        }
+    }
 
 }
